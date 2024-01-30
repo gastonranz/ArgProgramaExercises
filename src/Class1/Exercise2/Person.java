@@ -1,4 +1,4 @@
-package Exercise2;
+package Class1.Exercise2;
 
 import java.util.Objects;
 

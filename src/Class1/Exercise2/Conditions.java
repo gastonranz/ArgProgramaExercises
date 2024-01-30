@@ -1,4 +1,4 @@
-package Exercise2;
+package Class1.Exercise2;
 
 public class Conditions {
     private static final Double MONTH_INCOME = 489083d;
