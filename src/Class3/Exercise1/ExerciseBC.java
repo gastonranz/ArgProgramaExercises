@@ -3,17 +3,17 @@ package Class3.Exercise1;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class ExerciseB {
+public class ExerciseBC {
     public static void main(String[] args) {
 
         Integer num1 = null;
         Integer num2 = null;
         Integer num3 = null;
-        num1 = ExerciseB.getInputNumbers("first", num1);
-        num2 = ExerciseB.getInputNumbers("second", num2);
-        num3 = ExerciseB.getInputNumbers("third", num3);
+        num1 = ExerciseBC.getInputNumbers("first", num1);
+        num2 = ExerciseBC.getInputNumbers("second", num2);
+        num3 = ExerciseBC.getInputNumbers("third", num3);
 
-        ExerciseB.printNumbers(num1, num2, num3);
+        ExerciseBC.printNumbers(num1, num2, num3);
     }
 
     private static Integer getInputNumbers(String message, Integer num) {
@@ -53,12 +53,12 @@ public class ExerciseB {
         } while(!letter.equalsIgnoreCase("y") && !letter.equalsIgnoreCase("n"));
 
         if(isAscendant) {
-            ExerciseB.getOrderedNumbers(arrayNum, num1, num2, num3);
+            ExerciseBC.getOrderedNumbers(arrayNum, num1, num2, num3);
             System.out.println(Arrays.toString(arrayNum));
         } else {
             Integer[] newArrayNum = new Integer[3];
             int j = 2;
-            ExerciseB.getOrderedNumbers(arrayNum, num1, num2, num3);
+            ExerciseBC.getOrderedNumbers(arrayNum, num1, num2, num3);
             for(int i = 0; i < arrayNum.length; i++) {
                 newArrayNum[i] = arrayNum[j];
                 j--;
@@ -66,7 +66,7 @@ public class ExerciseB {
             System.out.println(Arrays.toString(newArrayNum));
         }
 
-        System.out.println("Now type a number to add all numbers.");
+        System.out.println("Now type a number to save the add result of all numbers.");
         do {
             try {
                 xNum = input.nextInt();
