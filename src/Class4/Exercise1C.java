@@ -208,23 +208,6 @@ public class Exercise1C {
             if(xNum < num) result += num;
         }
 
-        /*
-        do {
-            try {
-                xNum = input.nextInt();
-            } catch(Exception e) {
-                System.out.println("Please write a number!");
-                input.next();
-            }
-        } while(xNum == null);
-
-        for(Integer num : arrayNum) {
-            if(xNum < num) {
-                result += num;
-            }
-        }
-        */
-
         System.out.println("The plus result of the numbers more than " + xNum + " is -> " + result);
     }
 
