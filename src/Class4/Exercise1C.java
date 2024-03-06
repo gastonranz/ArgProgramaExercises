@@ -7,22 +7,79 @@ import java.util.regex.Pattern;
 
 public class Exercise1C {
     public static void main(String[] args) {
+        Exercise1C.argsValuesValidation(args);
+    }
+
+    private static void argsValuesValidation(String[] args) {
         Integer num1 = null;
         Integer num2 = null;
         Integer num3 = null;
         String ascDesc = null;
-        int argsIndexValidation = 4;
 
-        if(args.length == argsIndexValidation) {
-            Exercise1C.argsValuesValidation(args, num1, num2, num3, ascDesc);
-        } else {
-            num1 = Exercise1C.getInputNumbers("first", num1);
-            num2 = Exercise1C.getInputNumbers("second", num2);
-            num3 = Exercise1C.getInputNumbers("third", num3);
+        int result = 0;
+        String numRegEx = "[0-9]+";
+        String charRegEx = "^[ad]$";
+        Pattern pattern = Pattern.compile(numRegEx);
+        Pattern pattern2 = Pattern.compile(charRegEx);
 
-            Exercise1C.printNumbers(num1, num2, num3);
+        if(args.length >= 1) {
+            for(String arg : args) {
+                Matcher matcher = pattern.matcher(arg);
+                Matcher matcher2 = pattern2.matcher(arg);
+
+            /*
+            if(i <= 2 && matcher.matches()) {
+                result++;
+            } else if(i <= 2 && !matcher.matches()) {
+                System.out.println("The " + args[i] + " value must be a number!");
+                break;
+            } else if(i == 3 && matcher2.matches()) {
+                result++;
+            } else if(i == 3 && !matcher2.matches()) {
+                System.out.println("The " + args[i] + "th value must be \"a\" to ascendant order or \"d\" to descendant order!");
+            } else {
+                System.out.println("one of the values is incorrect!");
+                break;
+            }*/
+
+                if(result < 4 && matcher.matches()) {
+                    result++;
+
+                    switch(result) {
+                        case 1 -> num1 = Integer.parseInt(arg);
+                        case 2 -> num2 = Integer.parseInt(arg);
+                        case 3 -> num3 = Integer.parseInt(arg);
+                    }
+                } else if(ascDesc == null && matcher2.matches()) {
+                    ascDesc = arg;
+                } else if(matcher.matches()) {
+                    System.out.println("You just have to sent 3 numbers!");
+                } else if(matcher2.matches()) {
+                    System.out.println("You just have to sent 1 char value! Type \"a\" to get an ascendant order or \"d\" to get a descendant order!");
+                }
+            }
         }
 
+        if(result == 3 && ascDesc != null) {
+            Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
+        } else {
+            switch(result) {
+                case 0 -> {
+                    num1 = Exercise1C.getInputNumbers("first", num1);
+                    num2 = Exercise1C.getInputNumbers("second", num2);
+                    num3 = Exercise1C.getInputNumbers("third", num3);
+                } case 1 -> {
+                    num2 = Exercise1C.getInputNumbers("second", num2);
+                    num3 = Exercise1C.getInputNumbers("third", num3);
+                } case 2 -> num3 = Exercise1C.getInputNumbers("third", num3);
+            }
+
+            if(ascDesc != null) {
+                Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
+            } else {
+                Exercise1C.printNumbers(num1, num2, num3);
+            }
+        }
     }
 
     private static void printNumbersByArgs(Integer num1, Integer num2, Integer num3, String ascDesc) {
@@ -47,73 +104,6 @@ public class Exercise1C {
             }
 
             System.out.println(Arrays.toString(newArrayNum));
-        }
-    }
-
-    private static void argsValuesValidation(String[] args, Integer num1, Integer num2, Integer num3, String ascDesc) {
-        int result = 0;
-        String numRegEx = "[0-9]+";
-        String charRegEx = "^[ad]$";
-        Pattern pattern = Pattern.compile(numRegEx);
-        Pattern pattern2 = Pattern.compile(charRegEx);
-
-
-
-        for(String arg : args) {
-            Matcher matcher = pattern.matcher(arg);
-            Matcher matcher2 = pattern2.matcher(arg);
-
-            /*
-            if(i <= 2 && matcher.matches()) {
-                result++;
-            } else if(i <= 2 && !matcher.matches()) {
-                System.out.println("The " + args[i] + " value must be a number!");
-                break;
-            } else if(i == 3 && matcher2.matches()) {
-                result++;
-            } else if(i == 3 && !matcher2.matches()) {
-                System.out.println("The " + args[i] + "th value must be \"a\" to ascendant order or \"d\" to descendant order!");
-            } else {
-                System.out.println("one of the values is incorrect!");
-                break;
-            }*/
-
-            if(result < 4 && matcher.matches()) {
-                result++;
-
-                switch(result) {
-                    case 1 -> num1 = Integer.parseInt(arg);
-                    case 2 -> num2 = Integer.parseInt(arg);
-                    case 3 -> num3 = Integer.parseInt(arg);
-                }
-            } else if(ascDesc == null && matcher2.matches()) {
-                ascDesc = arg;
-            } else if(matcher.matches()) {
-                System.out.println("You just have to sent 3 numbers!");
-            } else if(matcher2.matches()) {
-                System.out.println("You just have to sent 1 char value! Type \"a\" to get an ascendant order or \"d\" to get a descendant order!");
-            }
-        }
-
-        if(result == 3 && ascDesc != null) {
-            Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
-        } else {
-            switch(result) {
-                case 0 -> {
-                    num1 = Exercise1C.getInputNumbers("first", num1);
-                    num2 = Exercise1C.getInputNumbers("second", num2);
-                    num3 = Exercise1C.getInputNumbers("third", num3);
-                } case 1 -> {
-                    num2 = Exercise1C.getInputNumbers("second", num2);
-                    num3 = Exercise1C.getInputNumbers("third", num3);
-                } case 2 -> num3 = Exercise1C.getInputNumbers("third", num3);
-            }
-
-            if(ascDesc != null) {
-                Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
-            } else {
-                Exercise1C.printNumbers(num1, num2, num3);
-            }
         }
     }
 
