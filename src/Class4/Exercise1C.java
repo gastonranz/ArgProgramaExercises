@@ -54,8 +54,9 @@ public class Exercise1C {
         }
     }
 
-    private static boolean argsValuesValidation(String[] args) {
+    private static boolean argsValuesValidation(String[] args, Integer num1, Integer num2, Integer num2, String ascDesc) {
         boolean correctValues = false;
+        boolean isChar = false;
         int result = 0;
         String numRegEx = "[0-9]+";
         String charRegEx = "^[ad]$";
@@ -66,6 +67,7 @@ public class Exercise1C {
             Matcher matcher = pattern.matcher(args[i]);
             Matcher matcher2 = pattern2.matcher(args[i]);
 
+            /*
             if(i <= 2 && matcher.matches()) {
                 result++;
             } else if(i <= 2 && !matcher.matches()) {
@@ -74,14 +76,27 @@ public class Exercise1C {
             } else if(i == 3 && matcher2.matches()) {
                 result++;
             } else if(i == 3 && !matcher2.matches()) {
-                System.out.println("The \" + args[i] + \"th value must be \\\"a\\\" to ascendant order or \\\"d\\\" to descendant order!");
+                System.out.println("The " + args[i] + "th value must be \"a\" to ascendant order or \"d\" to descendant order!");
             } else {
                 System.out.println("one of the values is incorrect!");
                 break;
+            }*/
+
+            if(result < 4 && matcher.matches()) {
+                result++;
+                switch(result) {
+                    case 1 -> num1 = args[i];
+                }
+            } else if(!isChar && matcher2.matches()) {
+                isChar = true;
+            } else if(matcher.matches()) {
+                System.out.println("You just have to sent 3 numbers!");
+            } else if(matcher2.matches()) {
+                System.out.println("You just have to sent 1 char value! Type \"a\" to get an ascendant order or \"d\" to get a descendant order!");
             }
         }
 
-        if(result == 4) {
+        if(result == 3 && isChar) {
             correctValues = true;
         }
 
