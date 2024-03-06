@@ -14,11 +14,7 @@ public class Exercise1C {
         int argsIndexValidation = 4;
 
         if(args.length == argsIndexValidation) {
-            boolean correctValues = Exercise1C.argsValuesValidation(args);
-
-            if(correctValues) {
-                Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
-            }
+            Exercise1C.argsValuesValidation(args, num1, num2, num3, ascDesc);
         } else {
             num1 = Exercise1C.getInputNumbers("first", num1);
             num2 = Exercise1C.getInputNumbers("second", num2);
@@ -54,18 +50,18 @@ public class Exercise1C {
         }
     }
 
-    private static boolean argsValuesValidation(String[] args, Integer num1, Integer num2, Integer num2, String ascDesc) {
-        boolean correctValues = false;
-        boolean isChar = false;
+    private static void argsValuesValidation(String[] args, Integer num1, Integer num2, Integer num3, String ascDesc) {
         int result = 0;
         String numRegEx = "[0-9]+";
         String charRegEx = "^[ad]$";
         Pattern pattern = Pattern.compile(numRegEx);
         Pattern pattern2 = Pattern.compile(charRegEx);
 
-        for(int i = 0; i < args.length; i++) {
-            Matcher matcher = pattern.matcher(args[i]);
-            Matcher matcher2 = pattern2.matcher(args[i]);
+
+
+        for(String arg : args) {
+            Matcher matcher = pattern.matcher(arg);
+            Matcher matcher2 = pattern2.matcher(arg);
 
             /*
             if(i <= 2 && matcher.matches()) {
@@ -84,11 +80,14 @@ public class Exercise1C {
 
             if(result < 4 && matcher.matches()) {
                 result++;
+
                 switch(result) {
-                    case 1 -> num1 = args[i];
+                    case 1 -> num1 = Integer.parseInt(arg);
+                    case 2 -> num2 = Integer.parseInt(arg);
+                    case 3 -> num3 = Integer.parseInt(arg);
                 }
-            } else if(!isChar && matcher2.matches()) {
-                isChar = true;
+            } else if(ascDesc == null && matcher2.matches()) {
+                ascDesc = arg;
             } else if(matcher.matches()) {
                 System.out.println("You just have to sent 3 numbers!");
             } else if(matcher2.matches()) {
@@ -96,11 +95,26 @@ public class Exercise1C {
             }
         }
 
-        if(result == 3 && isChar) {
-            correctValues = true;
-        }
+        if(result == 3 && ascDesc != null) {
+            Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
+        } else {
+            switch(result) {
+                case 0 -> {
+                    num1 = Exercise1C.getInputNumbers("first", num1);
+                    num2 = Exercise1C.getInputNumbers("second", num2);
+                    num3 = Exercise1C.getInputNumbers("third", num3);
+                } case 1 -> {
+                    num2 = Exercise1C.getInputNumbers("second", num2);
+                    num3 = Exercise1C.getInputNumbers("third", num3);
+                } case 2 -> num3 = Exercise1C.getInputNumbers("third", num3);
+            }
 
-        return correctValues;
+            if(ascDesc != null) {
+                Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
+            } else {
+                Exercise1C.printNumbers(num1, num2, num3);
+            }
+        }
     }
 
     private static Integer getInputNumbers(String message, Integer num) {
