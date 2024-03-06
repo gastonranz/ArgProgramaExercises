@@ -10,11 +10,82 @@ public class Exercise1C {
         Integer num1 = null;
         Integer num2 = null;
         Integer num3 = null;
-        num1 = Exercise1C.getInputNumbers("first", num1);
-        num2 = Exercise1C.getInputNumbers("second", num2);
-        num3 = Exercise1C.getInputNumbers("third", num3);
+        String ascDesc = null;
+        int argsIndexValidation = 4;
 
-        Exercise1C.printNumbers(num1, num2, num3);
+        if(args.length == argsIndexValidation) {
+            boolean correctValues = Exercise1C.argsValuesValidation(args);
+
+            if(correctValues) {
+                Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
+            }
+        } else {
+            num1 = Exercise1C.getInputNumbers("first", num1);
+            num2 = Exercise1C.getInputNumbers("second", num2);
+            num3 = Exercise1C.getInputNumbers("third", num3);
+
+            Exercise1C.printNumbers(num1, num2, num3);
+        }
+
+    }
+
+    private static void printNumbersByArgs(Integer num1, Integer num2, Integer num3, String ascDesc) {
+        boolean isAscendant = false;
+        Integer[] arrayNum = new Integer[3];
+
+        if(!ascDesc.equalsIgnoreCase("d")) {
+           isAscendant = true;
+        }
+
+        if(isAscendant) {
+            Exercise1C.getOrderedNumbers(arrayNum, num1, num2, num3);
+            System.out.println(Arrays.toString(arrayNum));
+        } else {
+            Integer[] newArrayNum = new Integer[3];
+            Exercise1C.getOrderedNumbers(arrayNum, num1, num2, num3);
+            int j = 2;
+
+            for(int i = 0; i < arrayNum.length; i++) {
+                newArrayNum[i] = arrayNum[j];
+                j--;
+            }
+
+            System.out.println(Arrays.toString(newArrayNum));
+        }
+    }
+
+    private static boolean argsValuesValidation(String[] args) {
+        boolean correctValues = false;
+        int result = 0;
+        String numRegEx = "[0-9]+";
+        String charRegEx = "^[ad]$";
+        Pattern pattern = Pattern.compile(numRegEx);
+        Pattern pattern2 = Pattern.compile(charRegEx);
+
+        for(int i = 0; i < args.length; i++) {
+            Matcher matcher = pattern.matcher(args[i]);
+            Matcher matcher2 = pattern2.matcher(args[i]);
+
+            if(i <= 2 && matcher.matches()) {
+                result++;
+            } else if(i <= 2 && !matcher.matches()) {
+                System.out.println("The " + args[i] + " value must be a number!");
+                break;
+            } else if(i == 3 && matcher2.matches()) {
+                result++;
+            } else if(i == 3 && !matcher2.matches()) {
+                System.out.println("The \" + args[i] + \"th value must be \\\"a\\\" to ascendant order or \\\"d\\\" to descendant order!");
+            } else {
+                System.out.println("one of the values is incorrect!");
+                break;
+            }
+        }
+
+        if(result == 4) {
+            correctValues = true;
+        }
+
+        return correctValues;
     }
 
     private static Integer getInputNumbers(String message, Integer num) {

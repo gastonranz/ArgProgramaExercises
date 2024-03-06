@@ -51,20 +51,24 @@ public class Exercise1A {
             isAscendant = true;
         }
 
-        if(isAscendant) {
-            Exercise1A.getOrderedNumbers(arrayNum, num1, num2, num3);
-            System.out.println(Arrays.toString(arrayNum));
+        if(!isAscendant && !ascDesc.equalsIgnoreCase("d")) {
+            System.out.println("The fourth value must me \"a\" to ascendant order or \"d\" to descendant order");
         } else {
-            Integer[] newArrayNum = new Integer[arrayNum.length];
-            int j = 2;
-            Exercise1A.getOrderedNumbers(arrayNum, num1, num2, num3);
+            if(isAscendant) {
+                Exercise1A.getOrderedNumbers(arrayNum, num1, num2, num3);
+                System.out.println(Arrays.toString(arrayNum));
+            } else {
+                Integer[] newArrayNum = new Integer[arrayNum.length];
+                int j = 2;
+                Exercise1A.getOrderedNumbers(arrayNum, num1, num2, num3);
 
-            for(int i = 0; i < arrayNum.length; i++) {
-                newArrayNum[i] = arrayNum[j];
-                j--;
+                for(int i = 0; i < arrayNum.length; i++) {
+                    newArrayNum[i] = arrayNum[j];
+                    j--;
+                }
+
+                System.out.println(Arrays.toString(newArrayNum));
             }
-
-            System.out.println(Arrays.toString(newArrayNum));
         }
 
         /*
