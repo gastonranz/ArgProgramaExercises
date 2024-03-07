@@ -15,7 +15,7 @@ public class Exercise2 {
             Pattern pattern = Pattern.compile(regEx);
 
             try {
-                Path archive = Paths.get("C:\\Users\\Gastón\\Documents\\Ex2.txt");
+                Path archive = Paths.get("C:\\Users\\Gastón\\IdeaProjects\\ArgProgramaLev1\\src\\Class4\\Ex2.txt");
                 if(!Files.exists(archive)) Files.createFile(archive);
 
                 List<String> strList = Files.readAllLines(archive);

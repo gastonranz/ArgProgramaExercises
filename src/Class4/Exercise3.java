@@ -16,8 +16,8 @@ public class Exercise3 {
         StringBuilder outWord = new StringBuilder();
         StringBuilder finalWord = new StringBuilder();
 
-        String word = Exercise3.getWord();
-        Boolean[] spaces = Exercise3.getSpaces(word);
+        String word = Exercise3.getWord(args);
+        Boolean[] spaces = Exercise3.getSpaces(args, word);
         int decodeNum = Exercise3.getDecodeNum(); //Make a validation to avoid index out of bounds exception.
 
         Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
@@ -27,7 +27,7 @@ public class Exercise3 {
         System.out.println(finalWord);
     }
 
-    private static Boolean[] getSpaces(String word) {
+    private static Boolean[] getSpaces(String[] args, String word) {
         Boolean[] spaces = new Boolean[word.length()];
         for(int i = 0; i < word.length(); i++) {
             boolean isSpace = String.valueOf(word.charAt(i)).equals(" ");
@@ -37,7 +37,7 @@ public class Exercise3 {
         return spaces;
     }
 
-    private static String getWord() {
+    private static String getWord(String[] args) {
         Scanner input = new Scanner(System.in);
         System.out.println("Type a phrase, you must type just letters, don't use symbols, numbers or a dot.");
         String word = input.nextLine();
@@ -144,8 +144,8 @@ public class Exercise3 {
             }
 
             if(isSpace && !isFinal && !isNextSpace) { //I must have a control about index out of bounds error.
-                boolean isLowCase = String.valueOf(outWord.charAt(i + nextWord)).matches("[a-z]");
-                if(isLowCase) {
+                boolean isNextLowCase = String.valueOf(outWord.charAt(i + nextWord)).matches("[a-z]");
+                if(isNextLowCase) {
                     finalWord.append(outWord.charAt(i));
                 } else {
                     finalWord.append(outWord.toString().toUpperCase().charAt(i));
