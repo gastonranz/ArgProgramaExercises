@@ -235,7 +235,7 @@ public class Exercise1C {
                     }
                 } catch(NumberFormatException e) {
                     System.out.println("Please, type just a number!");
-                    input.next();
+                    //If I use this I will always have a "strNum" null value! -> input.next();
                 }
             }
 
