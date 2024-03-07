@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class Exercise2 {
     public static void main(String[] args) {
-        
+
         if(args.length > 0) {
             String regEx = "^[ 0-9]+$";
             Pattern pattern = Pattern.compile(regEx);
@@ -34,8 +34,10 @@ public class Exercise2 {
 
                     if(args[0].equalsIgnoreCase("s")) {
                         result = Exercise2.getPlus(arrayStrNum, result);
-                    } else {
+                    } else if(args[0].equalsIgnoreCase("m")) {
                         result = Exercise2.getMultiplication(arrayStrNum, result);
+                    } else {
+                        System.out.println("Please, type \"s\" to get a plus result or \"m\" to get a multiplication result");
                     }
 
                 } else {
@@ -53,12 +55,15 @@ public class Exercise2 {
 
                     if(args[0].equalsIgnoreCase("s")) {
                         result = Exercise2.getPlus(newArrayNum, result);
-                    } else {
+                    } else if(args[0].equalsIgnoreCase("m")) {
                         result = Exercise2.getMultiplication(newArrayNum, result);
+                    } else {
+                        System.out.println("Please, type \"s\" to get a plus result or \"m\" to get a multiplication result");
                     }
                 }
 
-                System.out.println("The result is " + result);
+                if(args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("m"))
+                    System.out.println("The result is " + result);
 
             /*
             Files.writeString(archive, "New text");
@@ -107,6 +112,8 @@ public class Exercise2 {
             } catch (Exception e) {
                 System.out.println("The file doesn't exist");
             }
+        } else {
+            System.out.println("Please, type \"s\" to get a plus result or \"m\" to get a multiplication result of all the numbers in the file");
         }
     }
 
@@ -119,7 +126,11 @@ public class Exercise2 {
 
     private static Double getMultiplication(String[] newArrayNum, Double result) {
         for(String strNum : newArrayNum) {
-            result *= Double.parseDouble(strNum);
+            if(result == 0) {
+                result = Double.parseDouble(strNum);
+            } else {
+                result *= Double.parseDouble(strNum);
+            }
         }
         return result;
     }
