@@ -31,21 +31,6 @@ public class Exercise1C {
                 Matcher matcher2 = pattern2.matcher(arg);
                 Matcher matcher3 = pattern3.matcher(arg);
 
-            /*
-            if(i <= 2 && matcher.matches()) {
-                result++;
-            } else if(i <= 2 && !matcher.matches()) {
-                System.out.println("The " + args[i] + " value must be a number!");
-                break;
-            } else if(i == 3 && matcher2.matches()) {
-                result++;
-            } else if(i == 3 && !matcher2.matches()) {
-                System.out.println("The " + args[i] + "th value must be \"a\" to ascendant order or \"d\" to descendant order!");
-            } else {
-                System.out.println("one of the values is incorrect!");
-                break;
-            }*/
-
                 if (result < 3 && matcher.matches() && arg.length() < 6) {
                     result++;
 
@@ -73,7 +58,7 @@ public class Exercise1C {
         }
 
         if(result == 3 && ascDesc != null && !multipleAscDesc) {
-            Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
+            Exercise1C.printNumbers(num1, num2, num3, ascDesc);
         } else {
             switch(result) {
                 case 0 -> {
@@ -87,35 +72,10 @@ public class Exercise1C {
             }
 
             if(ascDesc != null) {
-                Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
+                Exercise1C.printNumbers(num1, num2, num3, ascDesc);
             } else {
                 Exercise1C.printNumbers(num1, num2, num3);
             }
-        }
-    }
-
-    private static void printNumbersByArgs(Integer num1, Integer num2, Integer num3, String ascDesc) {
-        boolean isAscendant = false;
-        Integer[] arrayNum = new Integer[3];
-
-        if(!ascDesc.equalsIgnoreCase("d")) {
-           isAscendant = true;
-        }
-
-        if(isAscendant) {
-            Exercise1C.getOrderedNumbers(arrayNum, num1, num2, num3);
-            System.out.println(Arrays.toString(arrayNum));
-        } else {
-            Integer[] newArrayNum = new Integer[3];
-            Exercise1C.getOrderedNumbers(arrayNum, num1, num2, num3);
-            int j = 2;
-
-            for(int i = 0; i < arrayNum.length; i++) {
-                newArrayNum[i] = arrayNum[j];
-                j--;
-            }
-
-            System.out.println(Arrays.toString(newArrayNum));
         }
     }
 
@@ -162,6 +122,51 @@ public class Exercise1C {
         return num;
     }
 
+    private static void getOrderedNumbers(Integer[] arrayNum, Integer num1, Integer num2, Integer num3) {
+        Integer bigNum = num1;
+        Integer smallNum = num2;
+        Integer mediumNum = null;
+
+        if(bigNum < num2) bigNum = num2;
+        if(bigNum < num3) bigNum = num3;
+
+        if(smallNum > num1) smallNum = num1;
+        if(smallNum > num3) smallNum = num3;
+
+        if(num1 > smallNum && num1 < bigNum) mediumNum = num1;
+        if(num2 > smallNum && num2 < bigNum) mediumNum = num2;
+        if(num3 > smallNum && num3 < bigNum) mediumNum = num3;
+
+        arrayNum[0] = smallNum;
+        arrayNum[1] = mediumNum;
+        arrayNum[2] = bigNum;
+    }
+
+    private static void printNumbers(Integer num1, Integer num2, Integer num3, String ascDesc) {
+        boolean isAscendant = false;
+        Integer[] arrayNum = new Integer[3];
+
+        if(!ascDesc.equalsIgnoreCase("d")) {
+           isAscendant = true;
+        }
+
+        if(isAscendant) {
+            Exercise1C.getOrderedNumbers(arrayNum, num1, num2, num3);
+            System.out.println(Arrays.toString(arrayNum));
+        } else {
+            Integer[] newArrayNum = new Integer[3];
+            Exercise1C.getOrderedNumbers(arrayNum, num1, num2, num3);
+            int j = 2;
+
+            for(int i = 0; i < arrayNum.length; i++) {
+                newArrayNum[i] = arrayNum[j];
+                j--;
+            }
+
+            System.out.println(Arrays.toString(newArrayNum));
+        }
+    }
+
     private static void printNumbers(Integer num1, Integer num2, Integer num3) {
         Scanner input = new Scanner(System.in);
         boolean isAscendant = false;
@@ -179,7 +184,7 @@ public class Exercise1C {
             } else if(!letter.equalsIgnoreCase("n")) {
                 System.out.println("Please, type A if you want an ascendant number order, type D if you want a " +
                         "decreasing number order");
-                letter = input.nextLine();
+                letter = input.nextLine(); //To clean input value
             }
         } while(!letter.equalsIgnoreCase("a") && !letter.equalsIgnoreCase("d"));
 
@@ -210,8 +215,8 @@ public class Exercise1C {
             Pattern pattern2 = Pattern.compile(allNumRegEx);
             Matcher matcher2 = pattern2.matcher(strNum);
 
-            if(matcher.matches()) {
-                if(strNum.length() > 9) {
+            if(matcher.matches()) { //It's a negative number
+                if(strNum.length() > 5) {
                     System.out.println("You've typed a negative number and it's so long!\nType a smaller and a positive number!");
                 } else {
                     System.out.println("You've typed a negative number, please, type a positive number!");
@@ -230,36 +235,16 @@ public class Exercise1C {
                     }
                 } catch(NumberFormatException e) {
                     System.out.println("Please, type just a number!");
-                    //input.next();
+                    input.next();
                 }
             }
 
-        } while(xNum == null || xNum < 0 || xNum >= arrayNum[2]);
+        } while(xNum == null);
 
         for(int num : arrayNum) {
             if(xNum < num) result += num;
         }
 
         System.out.println("The plus result of the numbers more than " + xNum + " is -> " + result);
-    }
-
-    private static void getOrderedNumbers(Integer[] arrayNum, Integer num1, Integer num2, Integer num3) {
-        Integer bigNum = num1;
-        Integer smallNum = num2;
-        Integer mediumNum = null;
-
-        if(bigNum < num2) bigNum = num2;
-        if(bigNum < num3) bigNum = num3;
-
-        if(smallNum > num1) smallNum = num1;
-        if(smallNum > num3) smallNum = num3;
-
-        if(num1 > smallNum && num1 < bigNum) mediumNum = num1;
-        if(num2 > smallNum && num2 < bigNum) mediumNum = num2;
-        if(num3 > smallNum && num3 < bigNum) mediumNum = num3;
-
-        arrayNum[0] = smallNum;
-        arrayNum[1] = mediumNum;
-        arrayNum[2] = bigNum;
     }
 }
