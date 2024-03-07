@@ -17,15 +17,19 @@ public class Exercise1C {
         String ascDesc = null;
 
         int result = 0;
+        boolean multipleAscDesc = false;
         String numRegEx = "[0-9]+";
         String charRegEx = "^[ad]$";
+        String negNumRegEx = "^-[0-9]+$";
         Pattern pattern = Pattern.compile(numRegEx);
         Pattern pattern2 = Pattern.compile(charRegEx);
+        Pattern pattern3 = Pattern.compile(negNumRegEx);
 
         if(args.length >= 1) {
             for(String arg : args) {
                 Matcher matcher = pattern.matcher(arg);
                 Matcher matcher2 = pattern2.matcher(arg);
+                Matcher matcher3 = pattern3.matcher(arg);
 
             /*
             if(i <= 2 && matcher.matches()) {
@@ -42,36 +46,44 @@ public class Exercise1C {
                 break;
             }*/
 
-                if(result < 4 && matcher.matches()) {
+                if (result < 3 && matcher.matches() && arg.length() < 6) {
                     result++;
 
-                    switch(result) {
+                    switch (result) {
                         case 1 -> num1 = Integer.parseInt(arg);
                         case 2 -> num2 = Integer.parseInt(arg);
                         case 3 -> num3 = Integer.parseInt(arg);
                     }
-                } else if(ascDesc == null && matcher2.matches()) {
+                } else if (ascDesc == null && matcher2.matches()) {
                     ascDesc = arg;
-                } else if(matcher.matches()) {
+                } else if (result < 3 && matcher.matches() && arg.length() > 5) {
+                    System.out.println("The number is so long! Please type a shorter number");
+                } else if(result < 3 && matcher3.matches() && arg.length() > 5) {
+                    System.out.println("Please, don't type a negative number and a long number!");
+                } else if(result < 3 && matcher3.matches()) {
+                    System.out.println("Please, don't type a negative number!");
+                } else if(matcher.matches() || matcher3.matches()) {
                     System.out.println("You just have to sent 3 numbers!");
-                } else if(matcher2.matches()) {
+                    if(arg.length() > 5) System.out.println("Also, the number is so long, please type a shorter number");
+                } else if (matcher2.matches()) {
                     System.out.println("You just have to sent 1 char value! Type \"a\" to get an ascendant order or \"d\" to get a descendant order!");
+                    multipleAscDesc = true;
                 }
             }
         }
 
-        if(result == 3 && ascDesc != null) {
+        if(result == 3 && ascDesc != null && !multipleAscDesc) {
             Exercise1C.printNumbersByArgs(num1, num2, num3, ascDesc);
         } else {
             switch(result) {
                 case 0 -> {
-                    num1 = Exercise1C.getInputNumbers("first", num1);
-                    num2 = Exercise1C.getInputNumbers("second", num2);
-                    num3 = Exercise1C.getInputNumbers("third", num3);
+                    num1 = Exercise1C.getInputNumbers("first");
+                    num2 = Exercise1C.getInputNumbers("second");
+                    num3 = Exercise1C.getInputNumbers("third");
                 } case 1 -> {
-                    num2 = Exercise1C.getInputNumbers("second", num2);
-                    num3 = Exercise1C.getInputNumbers("third", num3);
-                } case 2 -> num3 = Exercise1C.getInputNumbers("third", num3);
+                    num2 = Exercise1C.getInputNumbers("second");
+                    num3 = Exercise1C.getInputNumbers("third");
+                } case 2 -> num3 = Exercise1C.getInputNumbers("third");
             }
 
             if(ascDesc != null) {
@@ -107,26 +119,28 @@ public class Exercise1C {
         }
     }
 
-    private static Integer getInputNumbers(String message, Integer num) {
+    private static Integer getInputNumbers(String message) {
+        Integer num = null;
+        String strNum;
+        String regEx = "-[0-9]+";
+        String allNumRegEx = "[0-9]+";
+
+        Pattern pattern = Pattern.compile(regEx);
+        Pattern pattern2 = Pattern.compile(allNumRegEx);
         System.out.println("Please, type your " + message + " number:");
         Scanner input = new Scanner(System.in);
 
         do {
-            String strNum = input.nextLine();
+            strNum = input.nextLine();
 
-            String regEx = "-[0-9]+";
-            Pattern pattern = Pattern.compile(regEx);
             Matcher matcher = pattern.matcher(String.valueOf(strNum));
-
-            String allNumRegEx = "[0-9]+";
-            Pattern pattern2 = Pattern.compile(allNumRegEx);
             Matcher matcher2 = pattern2.matcher(strNum);
 
-            //matches() -> coincide con toda la cadena de texto
+            //matches() -> coincide con TODA la cadena de texto
             //find() -> busca coincidencias en subcadenas dentro de la cadena de texto
 
             if(matcher.matches()) {
-                if(strNum.length() > 9) {
+                if(strNum.length() > 6) {
                     System.out.println("You've typed a negative number and it's so long!\nType a smaller and a positive number!");
                 } else {
                     System.out.println("You've typed a negative number, please, type a positive number!");
@@ -140,7 +154,6 @@ public class Exercise1C {
                     }
                 } catch(NumberFormatException e) {
                     System.out.println("Please, type just a number!");
-                    //input.next();
                 }
             }
 
@@ -156,19 +169,19 @@ public class Exercise1C {
         Integer xNum = null;
         int result = 0;
 
-        System.out.println("Type Y if you want an ascendant number order, type N if you want a " +
+        System.out.println("Type A if you want an ascendant number order, type D if you want a " +
                 "decreasing number order");
         String letter = input.nextLine();
 
         do{
-            if(letter.equalsIgnoreCase("y")) {
+            if(letter.equalsIgnoreCase("a")) {
                 isAscendant = true;
             } else if(!letter.equalsIgnoreCase("n")) {
-                System.out.println("Please, type Y if you want an ascendant number order, type N if you want a " +
+                System.out.println("Please, type A if you want an ascendant number order, type D if you want a " +
                         "decreasing number order");
                 letter = input.nextLine();
             }
-        } while(!letter.equalsIgnoreCase("y") && !letter.equalsIgnoreCase("n"));
+        } while(!letter.equalsIgnoreCase("a") && !letter.equalsIgnoreCase("d"));
 
         if(isAscendant) {
             Exercise1C.getOrderedNumbers(arrayNum, num1, num2, num3);
