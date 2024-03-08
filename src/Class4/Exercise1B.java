@@ -37,7 +37,7 @@ public class Exercise1B {
             //find() -> busca coincidencias en subcadenas dentro de la cadena de texto
 
             if(matcher.matches()) {
-                if(strNum.length() > 9) {
+                if(strNum.length() > 5) {
                     System.out.println("You've typed a negative number and it's so long!\nType a smaller and a positive number!");
                 } else {
                     System.out.println("You've typed a negative number, please, type a positive number!");
@@ -55,7 +55,7 @@ public class Exercise1B {
                 }
             }
 
-        } while(num == null || num < 0 || String.valueOf(num).length() > 5);
+        } while(num == null);
 
         return num;
     }
@@ -109,7 +109,7 @@ public class Exercise1B {
             Matcher matcher2 = pattern2.matcher(strNum);
 
             if(matcher.matches()) {
-                if(strNum.length() > 9) {
+                if(strNum.length() > 5) {
                     System.out.println("You've typed a negative number and it's so long!\nType a smaller and a positive number!");
                 } else {
                     System.out.println("You've typed a negative number, please, type a positive number!");
@@ -132,7 +132,7 @@ public class Exercise1B {
                 }
             }
 
-        } while(xNum == null || xNum < 0 || xNum >= arrayNum[2]);
+        } while(xNum == null);
 
         for(int num : arrayNum) {
             if(xNum < num) result += num;
