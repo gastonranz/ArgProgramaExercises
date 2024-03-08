@@ -5,6 +5,9 @@ import Class3.Exercise2.CodingAndDecoding;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +28,18 @@ public class Exercise3 {
 
 
         System.out.println(finalWord);
+    }
+
+    private static Files getInFile() {
+
+        try {
+
+        } catch() {
+
+        }
+        String inFile = "";
+        Path inPath = Paths.get(inFile);
+        if(!Files.exists(inPath)) Files.createFile(Paths.get(""));
     }
 
     private static Boolean[] getSpaces(String[] args, String word) {
