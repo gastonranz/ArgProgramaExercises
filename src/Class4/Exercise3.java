@@ -20,25 +20,48 @@ public class Exercise3 {
         StringBuilder finalWord = new StringBuilder();
         String word = null;
         Path inFile = null;
+        int decodeNum;
 
-        //Decode | Encode validation
+        if(args[0].equalsIgnoreCase("e") || args[0].equalsIgnoreCase("d")) {
+
+        } else {
+
+        }
         if(args[0].equalsIgnoreCase("e")) {
             word = Exercise3.getWord();
             inFile = Exercise3.getInFile(word);
         } else if(args[0].equalsIgnoreCase("d")) {
             Path decodeFile = Exercise3.getDecodeFile();
+
+            StringBuilder strBuilderWord = new StringBuilder();
+            List<String> inFileTexts = Files.readAllLines(Exercise3.getInFile());
+            for(String text : inFileTexts) {
+                strBuilderWord.append(text);
+            }
+
+            word = strBuilderWord.toString();
+            Boolean[] spaces = Exercise3.getSpaces(word);
+
+            String[] strDecNum = new String[1];
+            List<String> decNumList = Files.readAllLines(decodeFile);
+            strDecNum[0] = decNumList.get(0);
+            decodeNum = Exercise3.getDecodeNum(strDecNum);
+            Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
+            Exercise3.getFinalWord(outWord, finalWord, spaces);
+            Exercise3.setOutFile(inFile);
+
+            System.out.println(finalWord);
         }
 
 
         Boolean[] spaces = Exercise3.getSpaces(word);
-        int decodeNum = Exercise3.getDecodeNum(args); //Make a validation to avoid index out of bounds exception.
-        Path decodeFile = Exercise3.getDecodeFile(decodeNum);
+        decodeNum = Exercise3.getDecodeNum(args); //Make a validation to avoid index out of bounds exception.
+        Exercise3.createDecodeFile(decodeNum);
 
         Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
         Exercise3.getFinalWord(outWord, finalWord, spaces);
-
-
         Exercise3.setOutFile(inFile);
+
         System.out.println(finalWord);
     }
 
@@ -50,7 +73,20 @@ public class Exercise3 {
             if(!Files.exists(inPath)) Files.createFile(inPath);
             Files.write(inPath, word.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
         } catch(IOException e) {
-            System.out.println("File already exists.");
+            System.out.println("\"In File\" already exists.");
+        }
+
+        return inPath;
+    }
+
+    private static Path getInFile() {
+        String inStrFile = "C:\\Users\\Gastón\\Documents\\InFile.txt";
+        Path inPath = Paths.get(inStrFile);
+
+        try {
+            if(!Files.exists(inPath)) Files.createFile(inPath);
+        } catch(IOException e) {
+            System.out.println("\"In File\" already exists");
         }
 
         return inPath;
@@ -59,12 +95,15 @@ public class Exercise3 {
     private static List<String> readInFile() {
         String inStrFile = "C:\\Users\\Gastón\\Documents\\InFile.txt";
         Path inPath = Paths.get(inStrFile);
+        List<String> inFileText = null;
 
         try {
-            List<String> inFileText = Files.readAllLines(inPath);
+            inFileText = Files.readAllLines(inPath);
         } catch(IOException e) {
             System.out.println("\"In File\" text doesn't exist");
         }
+
+        return inFileText;
     }
 
     private static Path getOutFile() {
@@ -72,9 +111,7 @@ public class Exercise3 {
         Path outPath = Paths.get(outStrPath);
 
         try {
-            if(!Files.exists(outPath)) {
-                Files.createFile(outPath);
-            }
+            if(!Files.exists(outPath)) Files.createFile(outPath);
         } catch(IOException e) {
             System.out.println("The \"output\" file doesn't exist");
         }
@@ -107,19 +144,16 @@ public class Exercise3 {
         }
     }
 
-    private static Path getDecodeFile(Integer num) {
+    private static void createDecodeFile(Integer num) {
         String strDecodeNumPath = "C:\\Users\\Gastón\\Documents\\DecodeFile.txt";
         Path decodeNumPath = Paths.get(strDecodeNumPath);
 
         try {
             if(!Files.exists(decodeNumPath)) Files.createFile(decodeNumPath);
-
             Files.write(decodeNumPath, String.valueOf(num).getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             System.out.println("There's a problem about creating \"DecodeFile\"");
         }
-
-        return decodeNumPath;
     }
 
     private static Path getDecodeFile() {
