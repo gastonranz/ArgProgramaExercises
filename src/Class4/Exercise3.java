@@ -156,13 +156,18 @@ public class Exercise3 {
     }
 
     private static int getDecodeNum(String[] args) throws IOException {
+        boolean value = false;
         int num = 0;
 
         if(args[1].matches("[0-9]")) {
             if(Integer.parseInt(args[1]) < 28) {
                 num = Integer.parseInt(args[1]);
+            } else {
+                value = true;
             }
-        } else {
+        }
+
+        if(value) {
             String regEx = "[^0-9]";
             InputStreamReader keyboard = new InputStreamReader(System.in);
             BufferedReader buffer = new BufferedReader(keyboard);
@@ -248,7 +253,7 @@ public class Exercise3 {
 
             if(!isFinal) {
                 //isNextSpace = String.valueOf(outWord.charAt(i + 1)).equalsIgnoreCase(String.valueOf(abc.charAt(decodeNum)));
-                isNextSpace = spaces[i + 1];
+                isNextSpace = spaces[i + nextWord];
             }
 
             if(isSpace && !isFinal && !isNextSpace) { //I must have a control about index out of bounds error.
