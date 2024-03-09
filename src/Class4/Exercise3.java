@@ -18,65 +18,67 @@ public class Exercise3 {
         String abc2 = " abcdefghijklmnñopqrstuvwxyzabcdefghijklmnñopqrstuvwxyz";
         StringBuilder outWord = new StringBuilder();
         StringBuilder finalWord = new StringBuilder();
-        String word = null;
+        String word;
         Path inFile = null;
         int decodeNum;
 
         if(args[0].equalsIgnoreCase("e") || args[0].equalsIgnoreCase("d")) {
+            if(args[0].equalsIgnoreCase("e")) {
+                word = Exercise3.getWord();
+                Exercise3.setInFile(word);
+                inFile = Exercise3.getInFile();
+                Boolean[] spaces = Exercise3.getSpaces(word);
 
-        } else {
+                Path decodeFile = Exercise3.getDecodeFile();
+                String[] strDecodeNum = new String[1];
+                List<String> decodeNumList = Files.readAllLines(decodeFile);
+                strDecodeNum[0] = decodeNumList.get(0);
+                decodeNum = Exercise3.getDecodeNum(strDecodeNum);
+                Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
+                Exercise3.getFinalWord(outWord, finalWord, spaces);
 
-        }
-        if(args[0].equalsIgnoreCase("e")) {
-            word = Exercise3.getWord();
-            inFile = Exercise3.getInFile(word);
-        } else if(args[0].equalsIgnoreCase("d")) {
-            Path decodeFile = Exercise3.getDecodeFile();
+                Exercise3.setOutFile(inFile);
+                System.out.println(finalWord);
 
-            StringBuilder strBuilderWord = new StringBuilder();
-            List<String> inFileTexts = Files.readAllLines(Exercise3.getInFile());
-            for(String text : inFileTexts) {
-                strBuilderWord.append(text);
+            } else if(args[0].equalsIgnoreCase("d")) {
+                Path decodeFile = Exercise3.getDecodeFile();
+
+                //Reading Decode File and getting the text
+                StringBuilder strBuilderWord = new StringBuilder();
+                List<String> outFileTexts = Files.readAllLines(Exercise3.getOutFile());
+                for(String text : outFileTexts) {
+                    strBuilderWord.append(text);
+                }
+
+                word = strBuilderWord.toString();
+                Exercise3.setInFile(finalWord.toString());
+                inFile = Exercise3.getInFile();
+                Boolean[] spaces = Exercise3.getSpaces(word);
+
+                String[] strDecodeNum = new String[1];
+                List<String> decodeNumList = Files.readAllLines(decodeFile);
+                strDecodeNum[0] = decodeNumList.get(0);
+                decodeNum = Exercise3.getDecodeNum(strDecodeNum);
+                Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
+                Exercise3.getFinalWord(outWord, finalWord, spaces);
+
+                Exercise3.setOutFile(inFile);
+                System.out.println(finalWord);
             }
-
-            word = strBuilderWord.toString();
+        } else {
+            word = Exercise3.getWord();
             Boolean[] spaces = Exercise3.getSpaces(word);
+            Exercise3.setInFile(word);
+            decodeNum = Exercise3.getDecodeNum(args); //Make a validation to avoid index out of bounds exception.
+            Exercise3.setDecodeFile(decodeNum);
+            inFile = Exercise3.getInFile();
 
-            String[] strDecNum = new String[1];
-            List<String> decNumList = Files.readAllLines(decodeFile);
-            strDecNum[0] = decNumList.get(0);
-            decodeNum = Exercise3.getDecodeNum(strDecNum);
             Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
             Exercise3.getFinalWord(outWord, finalWord, spaces);
             Exercise3.setOutFile(inFile);
 
             System.out.println(finalWord);
         }
-
-
-        Boolean[] spaces = Exercise3.getSpaces(word);
-        decodeNum = Exercise3.getDecodeNum(args); //Make a validation to avoid index out of bounds exception.
-        Exercise3.createDecodeFile(decodeNum);
-
-        Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
-        Exercise3.getFinalWord(outWord, finalWord, spaces);
-        Exercise3.setOutFile(inFile);
-
-        System.out.println(finalWord);
-    }
-
-    private static Path getInFile(String word) {
-        String inStrFile = "C:\\Users\\Gastón\\Documents\\InFile.txt";
-        Path inPath = Paths.get(inStrFile);
-
-        try {
-            if(!Files.exists(inPath)) Files.createFile(inPath);
-            Files.write(inPath, word.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
-        } catch(IOException e) {
-            System.out.println("\"In File\" already exists.");
-        }
-
-        return inPath;
     }
 
     private static Path getInFile() {
@@ -104,6 +106,17 @@ public class Exercise3 {
         }
 
         return inFileText;
+    }
+
+    private static void setInFile(String text) {
+        String inStrFile = "C:\\Users\\Gastón\\Documents\\InFile.txt";
+        Path inPath = Paths.get(inStrFile);
+
+        try {
+            Files.write(inPath, text.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+        } catch(IOException e) {
+            System.out.println("\"In File\" already exists");
+        }
     }
 
     private static Path getOutFile() {
@@ -144,7 +157,7 @@ public class Exercise3 {
         }
     }
 
-    private static void createDecodeFile(Integer num) {
+    private static void setDecodeFile(Integer num) {
         String strDecodeNumPath = "C:\\Users\\Gastón\\Documents\\DecodeFile.txt";
         Path decodeNumPath = Paths.get(strDecodeNumPath);
 
@@ -193,11 +206,13 @@ public class Exercise3 {
         boolean value = false;
         int num = 0;
 
-        if(args[1].matches("[0-9]")) {
-            if(Integer.parseInt(args[1]) < 28) {
-                num = Integer.parseInt(args[1]);
-            } else {
-                value = true;
+        if(args.length > 1) {
+            if(args[1].matches("[0-9]")) {
+                if(Integer.parseInt(args[1]) < 28) {
+                    num = Integer.parseInt(args[1]);
+                } else {
+                    value = true;
+                }
             }
         }
 
