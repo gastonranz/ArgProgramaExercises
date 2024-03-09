@@ -1,7 +1,5 @@
 package Class4;
 
-import Class3.Exercise2.CodingAndDecoding;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,27 +18,35 @@ public class Exercise3 {
         String abc2 = " abcdefghijklmnñopqrstuvwxyzabcdefghijklmnñopqrstuvwxyz";
         StringBuilder outWord = new StringBuilder();
         StringBuilder finalWord = new StringBuilder();
+        String word = null;
+        Path inFile = null;
 
-        String word = Exercise3.getWord();
-        Path inFile = Exercise3.getInFile(word);
-        Path tempFile = Exercise3.getTempFile(args);
+        //Decode | Encode validation
+        if(args[0].equalsIgnoreCase("e")) {
+            word = Exercise3.getWord();
+            inFile = Exercise3.getInFile(word);
+        } else if(args[0].equalsIgnoreCase("d")) {
+            Path decodeFile = Exercise3.getDecodeFile();
+        }
+
+
         Boolean[] spaces = Exercise3.getSpaces(word);
         int decodeNum = Exercise3.getDecodeNum(args); //Make a validation to avoid index out of bounds exception.
+        Path decodeFile = Exercise3.getDecodeFile(decodeNum);
 
         Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
         Exercise3.getFinalWord(outWord, finalWord, spaces);
 
 
+        Exercise3.setOutFile(inFile);
         System.out.println(finalWord);
     }
 
     private static Path getInFile(String word) {
-        Path inPath = null;
+        String inStrFile = "C:\\Users\\Gastón\\Documents\\InFile.txt";
+        Path inPath = Paths.get(inStrFile);
 
         try {
-            String inStrFile = "C:\\Users\\Gastón\\Documents";
-            inPath = Paths.get(inStrFile);
-
             if(!Files.exists(inPath)) Files.createFile(inPath);
             Files.write(inPath, word.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
         } catch(IOException e) {
@@ -50,34 +56,75 @@ public class Exercise3 {
         return inPath;
     }
 
-    private static Path getOutFile() {
-        Path outPath = null;
+    private static List<String> readInFile() {
+        String inStrFile = "C:\\Users\\Gastón\\Documents\\InFile.txt";
+        Path inPath = Paths.get(inStrFile);
 
         try {
-            String outStrPath = "C:\\Users\\Gastón\\Documents";
-            outPath = Paths.get(outStrPath);
+            List<String> inFileText = Files.readAllLines(inPath);
+        } catch(IOException e) {
+            System.out.println("\"In File\" text doesn't exist");
+        }
+    }
 
+    private static Path getOutFile() {
+        String outStrPath = "C:\\Users\\Gastón\\Documents\\OutFile.txt";
+        Path outPath = Paths.get(outStrPath);
+
+        try {
             if(!Files.exists(outPath)) {
                 Files.createFile(outPath);
             }
         } catch(IOException e) {
-            System.out.println("The \"output\" file doesn't exists");
+            System.out.println("The \"output\" file doesn't exist");
         }
 
         return outPath;
     }
 
-    private static Path getTempFile(String[] args) {
-        Path tempFile = null;
+    private static void setOutFile(Path inFile) {
+        boolean value = false;
+        try {
+            Path outPath = Exercise3.getOutFile();
+
+            List<String> inFileLineTexts = Files.readAllLines(inFile);
+            if(inFileLineTexts.size() == 1) {
+                for(String text : inFileLineTexts) {
+                    Files.write(outPath, text.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+                }
+            } else {
+                for(String text : inFileLineTexts) {
+                    if(!value) {
+                        Files.write(outPath, text.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+                        value = true;
+                    } else {
+                        Files.write(outPath, (System.lineSeparator() + text).getBytes(), StandardOpenOption.APPEND);
+                    }
+                }
+            }
+        } catch(IOException e) {
+            System.out.println("\"InFile\" wasn't found");
+        }
+    }
+
+    private static Path getDecodeFile(Integer num) {
+        String strDecodeNumPath = "C:\\Users\\Gastón\\Documents\\DecodeFile.txt";
+        Path decodeNumPath = Paths.get(strDecodeNumPath);
 
         try {
-            tempFile = Files.createTempFile("encodeDecode", ".txt");
-            Files.write(tempFile, args[0].getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+            if(!Files.exists(decodeNumPath)) Files.createFile(decodeNumPath);
+
+            Files.write(decodeNumPath, String.valueOf(num).getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            System.out.println("There's a problem about creating the temporally file");
+            System.out.println("There's a problem about creating \"DecodeFile\"");
         }
 
-        return tempFile;
+        return decodeNumPath;
+    }
+
+    private static Path getDecodeFile() {
+        String strDecodeNumPath = "C:\\Users\\Gastón\\Documents\\DecodeFile.txt";
+        return Paths.get(strDecodeNumPath);
     }
 
     private static Boolean[] getSpaces(String word) {
