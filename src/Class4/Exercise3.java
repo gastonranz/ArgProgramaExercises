@@ -19,51 +19,79 @@ public class Exercise3 {
         StringBuilder outWord = new StringBuilder();
         StringBuilder finalWord = new StringBuilder();
         String word;
-        Path inFile = null;
+        Path inFile;
         int decodeNum;
 
-        if(args[0].equalsIgnoreCase("e") || args[0].equalsIgnoreCase("d")) {
-            if(args[0].equalsIgnoreCase("e")) {
-                word = Exercise3.getWord();
-                Exercise3.setInFile(word);
-                inFile = Exercise3.getInFile();
-                Boolean[] spaces = Exercise3.getSpaces(word);
+        if(args.length > 0) {
+            if(args[0].equalsIgnoreCase("e") || args[0].equalsIgnoreCase("d") && args.length < 2 || args[1].matches("[^0-9]")) {
+                if(args[0].equalsIgnoreCase("e") && args.length < 2) {
+                    word = Exercise3.getWord();
+                    Exercise3.setInFile(word);
+                    //inFile = Main.getInFile();
+                    Boolean[] spaces = Exercise3.getSpaces(word);
 
-                Path decodeFile = Exercise3.getDecodeFile();
-                String[] strDecodeNum = new String[1];
-                List<String> decodeNumList = Files.readAllLines(decodeFile);
-                strDecodeNum[0] = decodeNumList.get(0);
-                decodeNum = Exercise3.getDecodeNum(strDecodeNum);
-                Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
-                Exercise3.getFinalWord(outWord, finalWord, spaces);
+                    Path decodeFile = Exercise3.getDecodeFile();
+                    String[] strDecodeNum = new String[1];
+                    List<String> decodeNumList = Files.readAllLines(decodeFile);
+                    strDecodeNum[0] = decodeNumList.get(0);
+                    decodeNum = Exercise3.getDecodeNum(strDecodeNum);
+                    Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
+                    Exercise3.getFinalWord(outWord, finalWord, spaces);
 
-                Exercise3.setOutFile(inFile);
-                System.out.println(finalWord);
+                    Exercise3.setOutFile(finalWord);
+                    System.out.println(finalWord);
 
-            } else if(args[0].equalsIgnoreCase("d")) {
-                Path decodeFile = Exercise3.getDecodeFile();
+                } else if(args[0].equalsIgnoreCase("d") && args[1].matches("[0-9]")) {
+                    //Reading Decode File and getting the text
+                    StringBuilder strBuilderWord = new StringBuilder();
+                    List<String> outFileTexts = Files.readAllLines(Exercise3.getOutFile());
+                    for(String text : outFileTexts) {
+                        strBuilderWord.append(text);
+                    }
 
-                //Reading Decode File and getting the text
-                StringBuilder strBuilderWord = new StringBuilder();
-                List<String> outFileTexts = Files.readAllLines(Exercise3.getOutFile());
-                for(String text : outFileTexts) {
-                    strBuilderWord.append(text);
+                    word = strBuilderWord.toString();
+                    Exercise3.setInFile(word);
+                    //inFile = Main.getInFile();
+                    Boolean[] spaces = Exercise3.getSpaces(word);
+
+                    decodeNum = Exercise3.getDecodeNum(args);
+                    Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
+                    Exercise3.getFinalWord(outWord, finalWord, spaces);
+
+                    Exercise3.setOutFile(finalWord);
+                    System.out.println(finalWord);
+                } else if (args[0].equalsIgnoreCase("e") && args[1].matches("[0-9]")){
+                    word = Exercise3.getWord();
+                    Exercise3.setInFile(word);
+                    //inFile = Main.getInFile();
+                    Boolean[] spaces = Exercise3.getSpaces(word);
+
+                    decodeNum = Exercise3.getDecodeNum(args);
+                    Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
+                    Exercise3.getFinalWord(outWord, finalWord, spaces);
+
+                    Exercise3.setOutFile(finalWord);
+                    System.out.println(finalWord);
+                } else if(args[0].equalsIgnoreCase("d") && args[1].matches("[0-9]")) {
+                    //Reading Decode File and getting the text
+                    StringBuilder strBuilderWord = new StringBuilder();
+                    List<String> outFileTexts = Files.readAllLines(Exercise3.getOutFile());
+                    for(String text : outFileTexts) {
+                        strBuilderWord.append(text);
+                    }
+
+                    word = strBuilderWord.toString();
+                    Exercise3.setInFile(finalWord.toString());
+                    //inFile = Main.getInFile();
+                    Boolean[] spaces = Exercise3.getSpaces(word);
+
+                    decodeNum = Exercise3.getDecodeNum(args);
+                    Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
+                    Exercise3.getFinalWord(outWord, finalWord, spaces);
+
+                    Exercise3.setOutFile(finalWord);
+                    System.out.println(finalWord);
                 }
-
-                word = strBuilderWord.toString();
-                Exercise3.setInFile(finalWord.toString());
-                inFile = Exercise3.getInFile();
-                Boolean[] spaces = Exercise3.getSpaces(word);
-
-                String[] strDecodeNum = new String[1];
-                List<String> decodeNumList = Files.readAllLines(decodeFile);
-                strDecodeNum[0] = decodeNumList.get(0);
-                decodeNum = Exercise3.getDecodeNum(strDecodeNum);
-                Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
-                Exercise3.getFinalWord(outWord, finalWord, spaces);
-
-                Exercise3.setOutFile(inFile);
-                System.out.println(finalWord);
             }
         } else {
             word = Exercise3.getWord();
@@ -71,11 +99,11 @@ public class Exercise3 {
             Exercise3.setInFile(word);
             decodeNum = Exercise3.getDecodeNum(args); //Make a validation to avoid index out of bounds exception.
             Exercise3.setDecodeFile(decodeNum);
-            inFile = Exercise3.getInFile();
+            //inFile = Main.getInFile();
 
             Exercise3.getOutWord(abc, abc2, word, outWord, decodeNum);
             Exercise3.getFinalWord(outWord, finalWord, spaces);
-            Exercise3.setOutFile(inFile);
+            Exercise3.setOutFile(finalWord);
 
             System.out.println(finalWord);
         }
@@ -132,10 +160,12 @@ public class Exercise3 {
         return outPath;
     }
 
-    private static void setOutFile(Path inFile) {
+    private static void setOutFile(StringBuilder finalText) {
+        /*
         boolean value = false;
+
         try {
-            Path outPath = Exercise3.getOutFile();
+            Path outPath = Main.getOutFile();
 
             List<String> inFileLineTexts = Files.readAllLines(inFile);
             if(inFileLineTexts.size() == 1) {
@@ -155,6 +185,16 @@ public class Exercise3 {
         } catch(IOException e) {
             System.out.println("\"InFile\" wasn't found");
         }
+        */
+        Path outFile = Exercise3.getOutFile();
+
+        try {
+            if(!Files.exists(outFile)) Files.createFile(outFile);
+            Files.write(outFile, finalText.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+        } catch(IOException e) {
+            System.out.println("\"Out File\" doesn't exist.");
+        }
+
     }
 
     private static void setDecodeFile(Integer num) {
@@ -216,7 +256,7 @@ public class Exercise3 {
             }
         }
 
-        if(value) {
+        if(args.length < 1 || value) {
             String regEx = "[^0-9]";
             InputStreamReader keyboard = new InputStreamReader(System.in);
             BufferedReader buffer = new BufferedReader(keyboard);
