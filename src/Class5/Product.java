@@ -1,48 +1,63 @@
 package Class5;
 
+import java.util.Objects;
+
 public class Product {
-    private String item1;
-    private String item2;
-    private String item3;
+    private String name;
+    private Double price;
+    private String code;
 
-    public Product(String item1, String item2, String item3) {
-        this.item1 = item1;
-        this.item2 = item2;
-        this.item3 = item3;
+    public Product(String name, Double price, String code) {
+        this.name = name;
+        this.price = price;
+        this.code = code;
     }
 
-    public Product() {};
+    public Product() {}
 
-    public String getItem1() {
-        return this.item1;
+    public String getName() {
+        return this.name;
     }
 
-    public void setItem1(String item1) {
-        this.item1 = item1;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getItem2() {
-        return this.item2;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setItem2(String item2) {
-        this.item2 = item2;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
-    public String getItem3() {
-        return this.item3;
+    public String getCode() {
+        return code;
     }
 
-    public void setItem3(String item3) {
-        this.item3 = item3;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(name, product.name) && Objects.equals(price, product.price) && Objects.equals(code, product.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price, code);
     }
 
     @Override
     public String toString() {
         return "Product{" +
-                "item1='" + item1 + '\'' +
-                ", item2='" + item2 + '\'' +
-                ", item3='" + item3 + '\'' +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", code='" + code + '\'' +
                 '}';
     }
 }
