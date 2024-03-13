@@ -16,8 +16,9 @@ public class Discount {
             totalValues += item.getProductPrice() * item.getQuantity();
             totalDiscount += Discount.getDiscountValue(item, discount);
 
-            System.out.println("Item " + item.getProduct().getName() + " - Value: $" + item.getProductPrice() +
-                    " - Discount: $" + itemDiscount + " - Quantity: " + item.getQuantity() + " products");
+            System.out.println("Item " + item.getProduct().getName() + " - Unit value: $" + item.getProductPrice() +
+                    " - Total value: $" + totalValues + " - Discount: $" + itemDiscount + " - Quantity: " +
+                    item.getQuantity() + " products");
         }
 
         System.out.println("-------------------\nTotal value: $" + totalValues + " - Total discount: $" +

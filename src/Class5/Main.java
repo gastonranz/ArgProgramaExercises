@@ -28,7 +28,7 @@ public class Main {
 
             for(String text : fileLines) {
 
-                if(!text.isEmpty() && text.matches("^[a-zA-Z]+$")) {
+                if(!text.isEmpty() && text.matches("^[a-zA-Z_]+$")) {
                     System.out.println("Type the price of " + text + " item:");
                     strNum = Main.getText();
                     if(strNum.matches("^[0-9.]+$")) price =  Double.parseDouble(strNum);
