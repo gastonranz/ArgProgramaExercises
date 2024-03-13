@@ -19,10 +19,27 @@ public class Main {
         itemList1.add(item3);
 
         Carrito carrito1 = new Carrito(itemList1);
+        carrito1.getPrice();
+        System.out.println("-----");
 
         Double discount = 20d;
 
         Discount.getDiscount(carrito1, discount);
 
+        Product prod4 = new Product("WhiteBoard", 100.0, "sjw28a928a");
+        Product prod5 = new Product("BackPack", 450.0, "laksjdf2234klj2k3");
+
+        ItemCarrito item4 = new ItemCarrito(prod4, 1);
+        ItemCarrito item5 = new ItemCarrito(prod5, 3);
+
+        List<ItemCarrito> itemList2 = new ArrayList<>();
+        itemList2.add(item4);
+        itemList2.add(item5);
+
+        Carrito carrito2 = new Carrito(itemList2);
+        carrito2.getPrice();
+        System.out.println("-----");
+
+        Discount.getDiscount(carrito2, 30d);
     }
 }

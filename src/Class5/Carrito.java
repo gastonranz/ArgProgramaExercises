@@ -5,12 +5,16 @@ import java.util.Objects;
 
 public class Carrito {
     private List<ItemCarrito> itemsCarrito;
+    private int itemNumber;
 
     public Carrito(List<ItemCarrito> itemsCarrito) {
         this.itemsCarrito = itemsCarrito;
+        this.itemNumber = 0;
     }
 
-    public Carrito() {}
+    public Carrito() {
+        this.itemNumber = 0;
+    }
 
     public List<ItemCarrito> getItemsCarrito() {
         return itemsCarrito;
@@ -18,6 +22,25 @@ public class Carrito {
 
     public void setItemsCarrito(List<ItemCarrito> itemsCarrito) {
         this.itemsCarrito = itemsCarrito;
+    }
+
+    public void getPrice() {
+        Double totalPrice = 0d;
+        boolean value = false;
+
+        for(ItemCarrito item : this.itemsCarrito) {
+            if(this.itemNumber != 0 && !value) {
+                this.itemNumber = 0;
+                value = true;
+            } else if(this.itemNumber == 0 && !value) {
+                value = true;
+            }
+            this.itemNumber++;
+            totalPrice += item.getProductPrice();
+            System.out.println("Item " + this.itemNumber + ": " + item.getProduct().getName());
+        }
+
+        System.out.println("Total price: $" + totalPrice);
     }
 
     @Override
