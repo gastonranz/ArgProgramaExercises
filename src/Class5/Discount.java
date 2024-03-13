@@ -12,12 +12,12 @@ public class Discount {
 
         for(ItemCarrito item : itemsCarrito) {
             itemDiscount = Discount.getDiscountValue(item, discount);
-            totalPriceWithDiscount += item.getProductPrice() - Discount.getDiscountValue(item, discount);;
-            totalValues += item.getProductPrice();
-            totalDiscount += Discount.getDiscountValue(item, discount);;
+            totalPriceWithDiscount += (item.getProductPrice() * item.getQuantity()) - Discount.getDiscountValue(item, discount);
+            totalValues += item.getProductPrice() * item.getQuantity();
+            totalDiscount += Discount.getDiscountValue(item, discount);
 
             System.out.println("Item " + item.getProduct().getName() + " - Value: $" + item.getProductPrice() +
-                    " - Discount: $" + itemDiscount);
+                    " - Discount: $" + itemDiscount + " - Quantity: " + item.getQuantity() + " products");
         }
 
         System.out.println("-------------------\nTotal value: $" + totalValues + " - Total discount: $" +
@@ -25,6 +25,6 @@ public class Discount {
     }
 
     private static Double getDiscountValue(ItemCarrito item, Double discount) {
-        return (item.getProductPrice() * discount) / 100;
+        return ((item.getProductPrice() * item.getQuantity()) * discount) / 100;
     }
 }
