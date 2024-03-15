@@ -26,38 +26,46 @@ public class Main {
 
             String strNum = null;
 
-            for(String text : fileLines) {
+            if(fileLines.size() < 4) {
+                for(String text : fileLines) {
 
-                if(!text.isEmpty() && text.matches("^[a-zA-Z_]+$")) {
-                    System.out.println("Type the price of " + text + " item:");
-                    strNum = Main.getText();
-                    if(strNum.matches("^[0-9.]+$")) price =  Double.parseDouble(strNum);
+                    if(!text.isEmpty() && text.matches("^[a-zA-Z_]+$")) {
+                        System.out.println("Type the price of " + text + " item:");
+                        strNum = Main.getText();
+                        if(strNum.matches("^[0-9.]+$")) price =  Double.parseDouble(strNum);
 
-                    System.out.println("Now, type the " + text + " code item:");
-                    strNum = Main.getText();
+                        System.out.println("Now, type the " + text + " code item:");
+                        strNum = Main.getText();
+                    }
+
+                    productList.add(new Product(text, price, strNum));
                 }
 
-                productList.add(new Product(text, price, strNum));
-            }
+                for(Product product : productList) {
+                    System.out.println("Now please, type the " + product.getName() + " quantity item:");
+                    strNum = Main.getText();
+                    if(strNum.matches("^[0-9]+$")) quantity = Integer.parseInt(strNum);
 
-            for(Product product : productList) {
-                System.out.println("Now please, type the " + product.getName() + " quantity item:");
+                    itemCarritoList.add(new ItemCarrito(product, quantity));
+                }
+
+                Carrito carrito = new Carrito(itemCarritoList);
+                carrito.getPrice();
+                System.out.println("--------");
+
+                System.out.println("Please, type the discount for all the items:");
+
                 strNum = Main.getText();
-                if(strNum.matches("^[0-9]+$")) quantity = Integer.parseInt(strNum);
+                if(strNum.matches("^[0-9.]+$")) discount = Double.parseDouble(strNum);
 
-                itemCarritoList.add(new ItemCarrito(product, quantity));
+                Discount.getDiscount(carrito, discount);
+            } else {
+                for(String text : fileLines) {
+                    System.out.println(text);
+                }
+                System.out.println("Carrito out of limit -> " + fileLines.size() + " total items.\nPlease, just add 3 or less items!");
             }
 
-            Carrito carrito = new Carrito(itemCarritoList);
-            carrito.getPrice();
-            System.out.println("--------");
-
-            System.out.println("Please, type the discount for all the items:");
-
-            strNum = Main.getText();
-            if(strNum.matches("^[0-9.]+$")) discount = Double.parseDouble(strNum);
-
-            Discount.getDiscount(carrito, discount);
         } catch(IOException e) {
             System.out.println("There's a problem to localize \"Exercise5.txt\" file");
         }

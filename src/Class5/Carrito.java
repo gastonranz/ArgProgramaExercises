@@ -40,7 +40,7 @@ public class Carrito {
             System.out.println("Item " + this.itemNumber + ": " + item.getProduct().getName());
         }
 
-        System.out.println("Total price: $" + totalPrice);
+        if(itemsCarrito.size() < 4) System.out.println("Total price: $" + totalPrice);
     }
 
     @Override
