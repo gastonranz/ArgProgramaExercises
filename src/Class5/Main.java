@@ -1,5 +1,8 @@
 package Class5;
 
+import Class5.Discount.Discount;
+import Class5.Discount.FixedDiscount;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -114,6 +117,41 @@ public class Main {
 
         Discount.getDiscount(carrito2, 30d);
         */
+    }
+
+    private static void getDiscount(Carrito carrito, Double discount) {
+        if(carrito.getItemsCarrito().size() < 4) {
+            List<ItemCarrito> itemsCarrito = carrito.getItemsCarrito();
+            Double itemDiscount;
+            Double totalPriceWithDiscount = 0d;
+            Double totalValues = 0d;
+            Double totalDiscount = 0d;
+
+            for(ItemCarrito item : itemsCarrito) {
+                itemDiscount = Main.getDiscountValue(item, discount);
+                totalPriceWithDiscount += (item.getProductPrice() * item.getQuantity()) - Main.getDiscountValue(item, discount);
+                totalValues += item.getProductPrice() * item.getQuantity();
+                totalDiscount += Main.getDiscountValue(item, discount);
+
+                System.out.println("Item " + item.getProduct().getName() + " - Unit value: $" + item.getProductPrice() +
+                        " - Total value: $" + totalValues + " - Discount: $" + itemDiscount + " - Quantity: " +
+                        item.getQuantity() + " products");
+            }
+
+            System.out.println("-------------------\nTotal value: $" + totalValues + " - Total discount: $" +
+                    totalDiscount + "\nFinal price: $" + totalPriceWithDiscount);
+        } else {
+            System.out.println("The carrito is out of limit! Please, just add 3 items!");
+        }
+    }
+
+    private static Double getDiscountValue(ItemCarrito item, Double discount) {
+        Discount fixedDiscount = new FixedDiscount();
+        fixedDiscount.setValue(discount);
+
+        Double productDiscount = fixedDiscount.getFinalValue(discount);
+        return productDiscount * item.getQuantity();
+        //return ((item.getProductPrice() * item.getQuantity()) * discount) / 100;
     }
 
     private static String getText() throws IOException {
