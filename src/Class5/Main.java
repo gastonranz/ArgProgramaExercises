@@ -17,14 +17,16 @@ public class Main {
         List<Product> productList = new ArrayList<>();
         List<ItemCarrito> itemCarritoList = new ArrayList<>();
         Double price = 0d;
-        Integer quantity = 0;
         Double discount = 0d;
+        int count = 0;
 
         try {
             if(!Files.exists(inFile)) Files.createFile(inFile);
             List<String> fileLines = Files.readAllLines(inFile);
+            Integer[] quantity = new Integer[fileLines.size()];
 
-            String strNum = null;
+            String strNum;
+            String name = null;
 
             if(fileLines.size() < 4) {
                 for(String text : fileLines) {
@@ -34,19 +36,23 @@ public class Main {
                         strNum = Main.getText();
                         if(strNum.matches("^[0-9.]+$")) price =  Double.parseDouble(strNum);
 
-                        System.out.println("Now, type the " + text + " code item:");
+                        System.out.println("Type the " + text + " code item:");
+                        name = Main.getText();
+
+                        System.out.println("Now please, type the " + text + " quantity item:");
                         strNum = Main.getText();
+                        if(strNum.matches("^[0-9]+$")) quantity[count] = Integer.parseInt(strNum);
                     }
 
-                    productList.add(new Product(text, price, strNum));
+                    productList.add(new Product(text, price, name));
+                    count++;
                 }
 
-                for(Product product : productList) {
-                    System.out.println("Now please, type the " + product.getName() + " quantity item:");
-                    strNum = Main.getText();
-                    if(strNum.matches("^[0-9]+$")) quantity = Integer.parseInt(strNum);
+                count = 0;
 
-                    itemCarritoList.add(new ItemCarrito(product, quantity));
+                for(Product product : productList) {
+                    itemCarritoList.add(new ItemCarrito(product, quantity[count]));
+                    count++;
                 }
 
                 Carrito carrito = new Carrito(itemCarritoList);
@@ -61,7 +67,8 @@ public class Main {
                 Discount.getDiscount(carrito, discount);
             } else {
                 for(String text : fileLines) {
-                    System.out.println(text);
+                    System.out.println((count + 1) + " " + text);
+                    count++;
                 }
                 System.out.println("Carrito out of limit -> " + fileLines.size() + " total items.\nPlease, just add 3 or less items!");
             }
