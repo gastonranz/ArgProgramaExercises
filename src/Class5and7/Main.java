@@ -1,8 +1,10 @@
 package Class5and7;
 
+import Class5and7.Discount.DescuentoPorcentajeConTope;
 import Class5and7.Discount.Discount;
 import Class5and7.Discount.FixedDiscount;
 import Class5and7.Discount.PercentDiscount;
+import Class5and7.Discount.DescuentoPorcentajeConTope;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -134,7 +136,9 @@ public class Main {
 
             for(ItemCarrito item : itemsCarrito) {
                 itemDiscount = Main.getDiscountValue(item, discount);
-                totalPriceWithDiscount += Main.getPercentDiscountValue(discount, item.getProductPrice(), item.getQuantity());
+                Double tPWDCheck = Main.getDescuentoPorcentajeConTope(discount, item.getProductPrice(), item.getQuantity());
+                if(tPWDCheck != null) totalDiscount += tPWDCheck;
+                //totalPriceWithDiscount += Main.getPercentDiscountValue(discount, item.getProductPrice(), item.getQuantity());
                 //totalPriceWithDiscount += (item.getProductPrice() * item.getQuantity()) - Main.getDiscountValue(item, discount);
                 totalValues += item.getProductPrice() * item.getQuantity();
                 totalDiscount += Main.getDiscountValue(item, discount);
@@ -165,6 +169,13 @@ public class Main {
         percentDiscount.setValue(discount);
 
         return percentDiscount.getFinalValue(productPrice, quantity);
+    }
+
+    private static Double getDescuentoPorcentajeConTope(Double discount, Double productPrice, Integer quantity) {
+        Discount descuentoPorcentajeConTope = new DescuentoPorcentajeConTope();
+        descuentoPorcentajeConTope.setValue(discount);
+
+        return descuentoPorcentajeConTope.getFinalValue(productPrice, quantity);
     }
 
     private static String getText() throws IOException {
