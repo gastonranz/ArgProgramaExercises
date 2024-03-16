@@ -2,6 +2,7 @@ package Class5;
 
 import Class5.Discount.Discount;
 import Class5.Discount.FixedDiscount;
+import Class5.Discount.PercentDiscount;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class Main {
                 strNum = Main.getText();
                 if(strNum.matches("^[0-9.]+$")) discount = Double.parseDouble(strNum);
 
-                Discount.getDiscount(carrito, discount);
+                Main.getDiscount(carrito, discount);
             } else {
                 for(String text : fileLines) {
                     System.out.println((count + 1) + " " + text);
@@ -129,7 +130,8 @@ public class Main {
 
             for(ItemCarrito item : itemsCarrito) {
                 itemDiscount = Main.getDiscountValue(item, discount);
-                totalPriceWithDiscount += (item.getProductPrice() * item.getQuantity()) - Main.getDiscountValue(item, discount);
+                totalPriceWithDiscount += Main.getPercentDiscountValue(discount, item.getProductPrice(), item.getQuantity());
+                //totalPriceWithDiscount += (item.getProductPrice() * item.getQuantity()) - Main.getDiscountValue(item, discount);
                 totalValues += item.getProductPrice() * item.getQuantity();
                 totalDiscount += Main.getDiscountValue(item, discount);
 
@@ -149,9 +151,16 @@ public class Main {
         Discount fixedDiscount = new FixedDiscount();
         fixedDiscount.setValue(discount);
 
-        Double productDiscount = fixedDiscount.getFinalValue(discount);
-        return productDiscount * item.getQuantity();
+        Double productDiscount = fixedDiscount.getFinalValue(item.getProductPrice()); //I get percent value of one product
+        return productDiscount * item.getQuantity(); //I get percent of one product * product quantity
         //return ((item.getProductPrice() * item.getQuantity()) * discount) / 100;
+    }
+
+    private static Double getPercentDiscountValue(Double discount, Double productPrice, Integer quantity) {
+        Discount percentDiscount = new PercentDiscount();
+        percentDiscount.setValue(discount);
+
+        return percentDiscount.getFinalValue(productPrice, quantity);
     }
 
     private static String getText() throws IOException {

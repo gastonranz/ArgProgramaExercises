@@ -36,7 +36,7 @@ public class Carrito {
                 value = true;
             }
             this.itemNumber++;
-            totalPrice += item.getProductPrice();
+            totalPrice += item.getProductPrice() * item.getQuantity();
             System.out.println("Item " + this.itemNumber + ": " + item.getProduct().getName());
         }
 
