@@ -4,7 +4,6 @@ import Class5and7.Discount.DescuentoPorcentajeConTope;
 import Class5and7.Discount.Discount;
 import Class5and7.Discount.FixedDiscount;
 import Class5and7.Discount.PercentDiscount;
-import Class5and7.Discount.DescuentoPorcentajeConTope;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -65,9 +64,14 @@ public class Main {
                 carrito.getPrice();
                 System.out.println("--------");
 
-                if(args.length == 1 && args[0].matches("%") || args[0].matches("d")) {
-                    strNum = Main.getText();
-                    if(strNum.matches("^[0-9.]+$")) discount = Double.parseDouble(strNum);
+                if(args.length == 1) {
+                    if(args[0].matches("%") || args[0].matches("d")) {
+                        strNum = Main.getText();
+                        if(strNum.matches("^[0-9.]+$")) discount = Double.parseDouble(strNum);
+                    } else {
+                        System.out.println("Please, type \"d\" to get a Fixed Discount value or type \"%\" to get " +
+                                "a Percent Discount value");
+                    }
                 } else {
                     System.out.println("Please, type the discount for all the items:");
                     strNum = Main.getText();
@@ -128,6 +132,7 @@ public class Main {
 
     private static void getDiscount(Carrito carrito, Double discount) {
         if(carrito.getItemsCarrito().size() < 4) {
+            boolean nullValue = false;
             List<ItemCarrito> itemsCarrito = carrito.getItemsCarrito();
             Double itemDiscount;
             Double totalPriceWithDiscount = 0d;
@@ -135,27 +140,37 @@ public class Main {
             Double totalDiscount = 0d;
 
             for(ItemCarrito item : itemsCarrito) {
-                itemDiscount = Main.getDiscountValue(item, discount);
-                Double tPWDCheck = Main.getDescuentoPorcentajeConTope(discount, item.getProductPrice(), item.getQuantity());
-                if(tPWDCheck != null) totalDiscount += tPWDCheck;
+                Double productPrice = item.getProductPrice() * item.getQuantity();
+                itemDiscount = Main.getDescuentoPorcentajeConTopeValue(discount, item.getProductPrice(), item.getQuantity());
+                if(itemDiscount == null) {
+                    nullValue = true;
+                    break;
+                }
+                itemDiscount = itemDiscount - (item.getProductPrice() * item.getQuantity()) + (Main.getFixedDiscountValue(item, discount) * 2);
+                //itemDiscount = Main.getFixedDiscountValue(item, discount);
+                Double tPWDCheck = Main.getDescuentoPorcentajeConTopeValue(discount, item.getProductPrice(), item.getQuantity());
+                if(tPWDCheck != null) totalPriceWithDiscount += tPWDCheck;
                 //totalPriceWithDiscount += Main.getPercentDiscountValue(discount, item.getProductPrice(), item.getQuantity());
                 //totalPriceWithDiscount += (item.getProductPrice() * item.getQuantity()) - Main.getDiscountValue(item, discount);
-                totalValues += item.getProductPrice() * item.getQuantity();
-                totalDiscount += Main.getDiscountValue(item, discount);
+                totalValues += productPrice;
+                totalDiscount += itemDiscount;
+                //totalDiscount += Main.getFixedDiscountValue(item, discount);
 
                 System.out.println("Item " + item.getProduct().getName() + " - Unit value: $" + item.getProductPrice() +
-                        " - Total value: $" + totalValues + " - Discount: $" + itemDiscount + " - Quantity: " +
+                        " - Total value: $" + productPrice + " - Discount: $" + itemDiscount + " - Quantity: " +
                         item.getQuantity() + " products");
             }
 
-            System.out.println("-------------------\nTotal value: $" + totalValues + " - Total discount: $" +
-                    totalDiscount + "\nFinal price: $" + totalPriceWithDiscount);
+            if(!nullValue) {
+                System.out.println("-------------------\nTotal value: $" + totalValues + " - Total discount: $" +
+                        totalDiscount + "\nFinal price: $" + totalPriceWithDiscount);
+            }
         } else {
             System.out.println("The carrito is out of limit! Please, just add 3 items!");
         }
     }
 
-    private static Double getDiscountValue(ItemCarrito item, Double discount) {
+    private static Double getFixedDiscountValue(ItemCarrito item, Double discount) {
         Discount fixedDiscount = new FixedDiscount();
         fixedDiscount.setValue(discount);
 
@@ -171,7 +186,7 @@ public class Main {
         return percentDiscount.getFinalValue(productPrice, quantity);
     }
 
-    private static Double getDescuentoPorcentajeConTope(Double discount, Double productPrice, Integer quantity) {
+    private static Double getDescuentoPorcentajeConTopeValue(Double discount, Double productPrice, Integer quantity) {
         Discount descuentoPorcentajeConTope = new DescuentoPorcentajeConTope();
         descuentoPorcentajeConTope.setValue(discount);
 
