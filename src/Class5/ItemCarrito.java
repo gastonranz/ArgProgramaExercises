@@ -35,15 +35,15 @@ public class ItemCarrito {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ItemCarrito that = (ItemCarrito) o;
-        return Objects.equals(product, that.product) && Objects.equals(quantity, that.quantity);
+        if (this == o) return true; //same reference
+        if (o == null || getClass() != o.getClass()) return false; //Object reference is null or ItemCarrito is another class than Object
+        ItemCarrito that = (ItemCarrito) o; //Casting before comparing attributes
+        return Objects.equals(product, that.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(product, quantity);
+        return Objects.hash(product); //Return the hashcode of the ATTRIBUTE (NOT THE CLASS HASHCODE) I selected in this method;
     }
 
     @Override
