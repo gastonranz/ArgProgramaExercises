@@ -1,8 +1,8 @@
-package Class5;
+package Class5and7;
 
-import Class5.Discount.Discount;
-import Class5.Discount.FixedDiscount;
-import Class5.Discount.PercentDiscount;
+import Class5and7.Discount.Discount;
+import Class5and7.Discount.FixedDiscount;
+import Class5and7.Discount.PercentDiscount;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,10 +63,14 @@ public class Main {
                 carrito.getPrice();
                 System.out.println("--------");
 
-                System.out.println("Please, type the discount for all the items:");
-
-                strNum = Main.getText();
-                if(strNum.matches("^[0-9.]+$")) discount = Double.parseDouble(strNum);
+                if(args.length == 1 && args[0].matches("%") || args[0].matches("d")) {
+                    strNum = Main.getText();
+                    if(strNum.matches("^[0-9.]+$")) discount = Double.parseDouble(strNum);
+                } else {
+                    System.out.println("Please, type the discount for all the items:");
+                    strNum = Main.getText();
+                    if(strNum.matches("^[0-9.]+$")) discount = Double.parseDouble(strNum);
+                }
 
                 Main.getDiscount(carrito, discount);
             } else {

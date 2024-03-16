@@ -1,4 +1,4 @@
-package Class5;
+package Class5and7;
 
 import java.util.Objects;
 

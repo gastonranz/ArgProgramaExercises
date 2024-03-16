@@ -1,9 +1,4 @@
-package Class5.Discount;
-
-import Class5.Carrito;
-import Class5.ItemCarrito;
-
-import java.util.List;
+package Class5and7.Discount;
 
 public abstract class Discount {
     private Double value;

@@ -1,4 +1,4 @@
-package Class5.Discount;
+package Class5and7.Discount;
 
 public class PercentDiscount extends Discount {
     @Override
